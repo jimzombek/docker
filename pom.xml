@@ -2,7 +2,8 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.jmzombek</groupId>
   <artifactId>dockerized</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.0.1-SNAPSHOT</version> 
+  <packaging>jar</packaging>
   
   <name>jmzombe Hello World</name>
   <description>Dockerized Hello World Web Application</description>
@@ -13,33 +14,64 @@
   </properties>
   
   
-   <!-- Docker Maven Plugin 
-  
+  <!-- Docker Maven Plugin -->
+  <dependencies>
     <dependency>
       <groupId>com.spotify</groupId>
       <artifactId>docker-maven-plugin</artifactId>
       <version>1.1.1</version>
     </dependency>
-    -->
-    
-   <!-- Docker Maven Plugin  
-   <dependencies>
+        
+     <!-- Docker Maven Plugin  -->
      <dependency>
        <groupId>com.spotify</groupId>
        <artifactId>dockerfile-maven-plugin</artifactId>
-       <version>1.4.3</version>
+       <version>1.4.4</version>
      </dependency>
    </dependencies>
-   -->
   
   <build>
-    <plugins>
-      <!-- Tells Maven to include all the jars on the classpath and build a single, runnable "über-jar" -->
+    <plugins> 
+    
+      <!-- Make JAR file executable -->
       <plugin>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-maven-plugin</artifactId>
-      </plugin>
+	    <groupId>org.apache.maven.plugins</groupId>
+	    <artifactId>maven-jar-plugin</artifactId>
+	    <version>3.1.0</version>
+	    <configuration>
+	      <archive>
+	        <manifest>
+		      <mainClass>com.jmzombek.dockerized.Application</mainClass>
+	        </manifest>
+	      </archive>
+	    </configuration>
+      </plugin> 
+    
+    
+      <!-- Create Docker Image  
+      <plugin>
+        <groupId>com.spotify</groupId>
+        <artifactId>dockerfile-maven-plugin</artifactId>
+        <version>1.4.4</version>
+        <version>${dockerfile-maven-version}</version> 
+        <executions>
+          <execution>
+            <id>default</id>
+            <goals>
+              <goal>build</goal>
+              <goal>push</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <repository>/aws/jmzombek/helloworld</repository>
+          <tag>${project.version}</tag>
+          <buildArgs>
+            <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
+          </buildArgs>
+        </configuration>
+      </plugin> -->
     </plugins>
   </build>
-  
+    
 </project>
